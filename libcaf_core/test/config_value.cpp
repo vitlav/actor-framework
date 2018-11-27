@@ -19,7 +19,7 @@
 #include "caf/config.hpp"
 
 #define CAF_SUITE config_value
-#include "caf/test/unit_test.hpp"
+#include "caf/test/dsl.hpp"
 
 #include <string>
 
@@ -263,4 +263,11 @@ CAF_TEST(put values) {
   put(content, "a.b.d", 2);
   CAF_CHECK_EQUAL(content,
                   dd({{"a", d({{"b", v{d({{"c", v{1}}, {"d", v{2}}})}}})}}));
+}
+
+CAF_TEST(implicit global) {
+  config_value_map conf;
+  put(conf, "foo", "bar");
+  CAF_CHECK_EQUAL(unbox(get_if<std::string>(&conf, "foo")), "bar");
+  CAF_CHECK_EQUAL(unbox(get_if<std::string>(&conf, "global.foo")), "bar");
 }

@@ -545,8 +545,11 @@ void put_impl(dictionary<config_value::dictionary>& dict, string_view key,
 
 /// Converts `value` to a `config_value` and assigns it to `key`.
 /// @param dict Dictionary of key-value pairs.
-/// @param key Human-readable nested keys in the form `category.key`.
+/// @param key Human-readable nested keys in the form `category.key`. The
+///            function implicitly adds `global` if the key provides no
+///            category.
 /// @param value New value for given `key`.
+/// @pre `!key.empty()`
 template <class T>
 void put(dictionary<config_value::dictionary>& dict, string_view key,
          T&& value) {

@@ -183,8 +183,10 @@ void put_impl(dictionary<config_value::dictionary>& dict, string_view key,
   std::vector<string_view> path;
   split(path, key, ".");
   // Sanity check. At the very least, we need a category and a key.
-  if (path.size() < 2)
-    return;
+  if (path.size() < 2) {
+    // Fall back to implicit 'global' category if not provided by the user.
+    path.insert(path.begin(), "global");
+  }
   auto category = path.front();
   path.erase(path.begin());
   put_impl(dict[category], path, value);
